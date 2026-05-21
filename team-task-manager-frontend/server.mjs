@@ -22,7 +22,15 @@ const contentTypes = {
 function sendFile(res, filePath) {
   const type = contentTypes[extname(filePath)] ?? 'application/octet-stream';
   res.writeHead(200, { 'Content-Type': type });
-  createReadStream(filePath).pipe(res);
+  const stream = createReadStream(filePath);
+  stream.on('error', (err) => {
+    console.error(`Failed to read file "${filePath}":`, err.message);
+    if (!res.headersSent) {
+      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+    }
+    res.end('Internal Server Error');
+  });
+  stream.pipe(res);
 }
 
 const server = createServer((req, res) => {
