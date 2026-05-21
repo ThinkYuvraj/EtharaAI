@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
 const distDir = resolve(root, 'dist');
-const port = Number(process.env.PORT) || 4173;
+const port = Number(process.env.PORT) || 5173;
 
 const contentTypes = {
   '.css': 'text/css; charset=utf-8',
