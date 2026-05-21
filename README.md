@@ -1,75 +1,99 @@
-# Team Task Manager
+Team Task Manager
 
-Team Task Manager is a full-stack web application designed to help teams organize projects, assign tasks, track progress, and manage collaboration from a shared workspace. The application includes user authentication, project membership management, task assignment, task status tracking, dashboard summaries, and role-based access control.
+Team Task Manager is a full-stack web application developed to help teams organize projects, assign tasks, monitor progress, and manage collaboration efficiently through a centralized workspace. The application includes secure user authentication, project membership management, task assignment, task status tracking, dashboard analytics, and role-based access control.
 
-## Project Overview
+--------------------------------------------------
 
-The system is divided into two independent applications:
+LIVE DEPLOYMENT
 
-- `team-task-manager-frontend`: React, TypeScript, and Vite client application.
-- `team-task-manager-backend`: Express, TypeScript, MongoDB, and Mongoose REST API.
+Frontend Application
+https://frontend-production-0b59f.up.railway.app/
 
-The frontend communicates with the backend through HTTP API requests. 
-By default, the frontend runs on `http://127.0.0.1:5173`, and the backend runs on `http://localhost:5000`.
+Backend API
+https://compassionate-dream-production-18ff.up.railway.app/
 
-## Core Functionality
+Railway Project Dashboard
+https://railway.com/project/d3a2e446-6ee7-4239-b1b0-7e9187c60a86?environmentId=c0ed5a0e-1939-4a69-94e5-63e4959dcf71
 
-### User Authentication
+--------------------------------------------------
 
-- User signup with name, email, and password.
-- User login with email and password.
-- JWT-based authentication for protected API routes.
-- Persistent login using browser local storage.
-- Authenticated user refresh through the `/api/auth/me` endpoint.
-- Logout support that clears stored authentication data.
+PROJECT OVERVIEW
 
-### Role Management
+The system consists of two independent applications:
 
-- Users can have either an `admin` or `member` role.
-- The first registered user is assigned the `admin` role automatically.
-- Global administrators can access broader project and task data.
-- Project-level roles control who can manage individual projects and tasks.
+1. team-task-manager-frontend
+Built using React, TypeScript, and Vite for the client-side application.
 
-### Project Management
+2. team-task-manager-backend
+Built using Express.js, TypeScript, MongoDB, and Mongoose for the REST API backend.
 
-- Create projects with a name and optional description.
-- View projects associated with the authenticated user.
-- Update project name and description.
-- Delete projects when permitted.
-- Maintain project membership with project-specific roles.
-- Add, update, and remove project members.
-- Project creators are protected from being removed from their own project.
+The frontend communicates with the backend through HTTP API requests. During local development, the frontend runs on http://127.0.0.1:5173 while the backend runs on http://localhost:5000.
 
-### Task Management
+--------------------------------------------------
 
-- Create tasks under selected projects.
-- Assign tasks to project members.
-- Set task priority as `low`, `medium`, `high`, or `urgent`.
-- Track task status as pending, in progress, or completed.
-- Edit task details when the user has sufficient permission.
-- Update task status directly from the dashboard.
-- Delete tasks when permitted.
-- Filter and search tasks in the frontend dashboard.
+CORE FEATURES
 
-### Dashboard
+USER AUTHENTICATION
 
-- Displays total projects, total tasks, completed tasks, pending tasks, and in-progress tasks.
-- Shows recent task activity.
-- Displays project-level progress information.
-- Supports project-specific task views.
-- Provides task creation, editing, deletion, and assignment workflows.
+- User registration with name, email, and password
+- Secure login using JWT authentication
+- Protected API routes
+- Persistent login using browser local storage
+- Authenticated user session refresh using /api/auth/me
+- Logout functionality
 
-### User Interface
+ROLE MANAGEMENT
 
-- Protected dashboard route for authenticated users.
-- Login and signup pages.
-- Light and dark theme support.
-- Responsive frontend layout.
-- Client-side routing with React Router.
+- Support for admin and member roles
+- Automatic assignment of the first registered user as administrator
+- Global administrator access across projects and tasks
+- Project-level role management
 
-## Technology Stack
+PROJECT MANAGEMENT
 
-### Frontend
+- Create and manage projects
+- Update project details
+- Delete projects when authorized
+- Add and remove project members
+- Assign project roles
+- Restrict removal of project creators
+
+TASK MANAGEMENT
+
+- Create tasks under projects
+- Assign tasks to project members
+- Manage task priority levels:
+  - Low
+  - Medium
+  - High
+  - Urgent
+- Update task status:
+  - Pending
+  - In Progress
+  - Completed
+- Edit and delete tasks based on permissions
+- Search and filter tasks
+
+DASHBOARD
+
+- Display project statistics
+- Show completed, pending, and in-progress tasks
+- Display recent activity logs
+- Track project progress
+- Support project-specific task views
+
+USER INTERFACE
+
+- Responsive design
+- Protected dashboard routes
+- Light and dark mode support
+- Client-side routing using React Router
+
+--------------------------------------------------
+
+TECHNOLOGY STACK
+
+FRONTEND
 
 - React
 - TypeScript
@@ -78,22 +102,23 @@ By default, the frontend runs on `http://127.0.0.1:5173`, and the backend runs o
 - TanStack React Query
 - Axios
 
-### Backend
+BACKEND
 
 - Node.js
-- Express
+- Express.js
 - TypeScript
 - MongoDB
 - Mongoose
-- JSON Web Tokens
+- JSON Web Tokens (JWT)
 - bcryptjs
 - Zod
-- CORS
 - dotenv
+- CORS
 
-## Folder Structure
+--------------------------------------------------
 
-```text
+FOLDER STRUCTURE
+
 .
 ├── README.md
 ├── team-task-manager-backend
@@ -105,6 +130,7 @@ By default, the frontend runs on `http://127.0.0.1:5173`, and the backend runs o
 │   │   └── routes
 │   ├── package.json
 │   └── tsconfig.json
+│
 └── team-task-manager-frontend
     ├── src
     │   ├── auth
@@ -114,235 +140,190 @@ By default, the frontend runs on `http://127.0.0.1:5173`, and the backend runs o
     │   └── frontend-api.ts
     ├── package.json
     └── vite.config.ts
-```
 
-## Environment Configuration
+--------------------------------------------------
 
-The backend uses a `.env` file for runtime configuration.
+ENVIRONMENT CONFIGURATION
 
-Required backend environment variables:
+Backend Environment Variables
 
-```env
 PORT=5000
-CORS_ORIGIN=http://localhost:5173,http://127.0.0.1:5173
-MONGODB_URI=<your-mongodb-connection-string>
-JWT_SECRET=<your-jwt-secret>
+CORS_ORIGIN=https://frontend-production-0b59f.up.railway.app
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
 JWT_EXPIRES_IN=7d
-```
 
-The frontend uses the following API base configuration:
+Frontend Environment Variables
 
-```ts
-export const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:5000';
-```
+VITE_API_BASE=https://compassionate-dream-production-18ff.up.railway.app
 
-This means the frontend will use `VITE_API_BASE` when it is provided. If it is not provided, it will send API requests to `http://localhost:5000`.
+--------------------------------------------------
 
-Optional frontend environment variable:
+FRONTEND API CONFIGURATION
 
-```env
-VITE_API_BASE=http://localhost:5000
-```
+export const API_BASE =
+  import.meta.env.VITE_API_BASE ??
+  'https://compassionate-dream-production-18ff.up.railway.app';
 
-Do not commit real secrets such as database credentials, JWT secrets, passwords, or production API keys to a public repository.
+--------------------------------------------------
 
-## Installation
+INSTALLATION
 
-Install backend dependencies:
+Install Backend Dependencies
 
-```bash
 cd team-task-manager-backend
 npm install
-```
 
-Install frontend dependencies:
+Install Frontend Dependencies
 
-```bash
 cd team-task-manager-frontend
 npm install
-```
 
-## Running the Application
+--------------------------------------------------
 
-Start the backend API:
+RUNNING THE APPLICATION
 
-```bash
+Start Backend
+
 cd team-task-manager-backend
 npm run dev
-```
 
-The backend runs on:
-
-```text
+Backend runs on:
 http://localhost:5000
-```
 
-Start the frontend application:
+Start Frontend
 
-```bash
 cd team-task-manager-frontend
 npm run dev
-```
 
-The frontend runs on:
-
-```text
+Frontend runs on:
 http://127.0.0.1:5173
-```
 
-## Available Scripts
+--------------------------------------------------
 
-### Backend
+AVAILABLE SCRIPTS
 
-```bash
+BACKEND
+
 npm run dev
-```
-
 Runs the backend in development mode using TypeScript.
 
-```bash
 npm run build
-```
+Compiles the backend TypeScript source into the dist directory.
 
-Compiles the backend TypeScript source into the `dist` directory.
-
-```bash
 npm start
-```
+Runs the compiled backend application from dist/index.js.
 
-Runs the compiled backend application from `dist/index.js`.
+FRONTEND
 
-### Frontend
-
-```bash
 npm run dev
-```
-
 Runs the Vite development server.
 
-```bash
 npm run build
-```
-
 Builds the frontend for production.
 
-```bash
 npm run lint
-```
-
 Runs ESLint for the frontend codebase.
 
-```bash
 npm run preview
-```
-
 Serves the production frontend build locally for preview.
 
-## API Endpoints
+--------------------------------------------------
 
-### System
+API ENDPOINTS
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| GET | `/` | Returns API information and available endpoint groups. |
-| GET | `/health` | Returns backend health status. |
+SYSTEM ROUTES
 
-### Authentication
+GET /
+Returns API information and available endpoint groups.
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| POST | `/api/auth/signup` | Registers a new user. |
-| POST | `/api/auth/login` | Authenticates an existing user. |
-| GET | `/api/auth/me` | Returns the authenticated user profile. |
-| GET | `/api/auth/users` | Returns searchable user records for assignment and membership workflows. |
+GET /health
+Returns backend health status.
 
-### Projects
+AUTHENTICATION ROUTES
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| GET | `/api/projects` | Lists accessible projects. |
-| POST | `/api/projects` | Creates a new project. |
-| PATCH | `/api/projects/:projectId` | Updates a project. |
-| DELETE | `/api/projects/:projectId` | Deletes a project and its tasks. |
-| POST | `/api/projects/:projectId/members` | Adds or updates a project member. |
-| PATCH | `/api/projects/:projectId/members/:userId` | Updates a member role. |
-| DELETE | `/api/projects/:projectId/members/:userId` | Removes a member from a project. |
+POST /api/auth/signup
+Registers a new user.
 
-### Tasks
+POST /api/auth/login
+Authenticates an existing user.
 
-| Method | Endpoint | Description |
-| --- | --- | --- |
-| GET | `/api/tasks/dashboard` | Returns dashboard summaries, task activity, and progress data. |
-| GET | `/api/tasks` | Lists tasks for a selected project. |
-| POST | `/api/tasks` | Creates a new task. |
-| PATCH | `/api/tasks/:taskId` | Updates task details or status. |
-| DELETE | `/api/tasks/:taskId` | Deletes a task. |
+GET /api/auth/me
+Returns the authenticated user profile.
 
-## Data Models
+GET /api/auth/users
+Returns searchable user records for assignment and membership workflows.
 
-### User
+PROJECT ROUTES
 
-- `email`
-- `name`
-- `passwordHash`
-- `role`
-- `createdAt`
+GET /api/projects
+Lists accessible projects.
 
-### Project
+POST /api/projects
+Creates a new project.
 
-- `name`
-- `description`
-- `createdBy`
-- `members`
-- `archived`
-- `createdAt`
-- `updatedAt`
+PATCH /api/projects/:projectId
+Updates a project.
 
-### Task
+DELETE /api/projects/:projectId
+Deletes a project and its tasks.
 
-- `projectId`
-- `title`
-- `description`
-- `priority`
-- `status`
-- `dueDate`
-- `assigneeId`
-- `createdBy`
-- `createdAt`
-- `updatedAt`
+POST /api/projects/:projectId/members
+Adds or updates a project member.
 
-## Access Control Summary
+PATCH /api/projects/:projectId/members/:userId
+Updates a member role.
 
-- Authentication is required for project, task, and user lookup routes.
-- Global administrators have elevated access across the system.
-- Project administrators can manage project details, project members, and project tasks.
-- Project members can access assigned project data and update permitted task fields.
-- Task updates are restricted based on project role, task assignment, and creator ownership.
+DELETE /api/projects/:projectId/members/:userId
+Removes a member from a project.
 
-## Build Verification
+TASK ROUTES
 
-Before deployment, run the following commands:
+GET /api/tasks/dashboard
+Returns dashboard summaries, task activity, and progress data.
 
-```bash
+GET /api/tasks
+Lists tasks for a selected project.
+
+POST /api/tasks
+Creates a new task.
+
+PATCH /api/tasks/:taskId
+Updates task details or status.
+
+DELETE /api/tasks/:taskId
+Deletes a task.
+
+--------------------------------------------------
+
+BUILD VERIFICATION
+
 cd team-task-manager-backend
 npm run build
-```
 
-```bash
 cd team-task-manager-frontend
 npm run build
-```
 
 These commands verify that both applications compile successfully.
 
-## Security Notes
+--------------------------------------------------
 
-- Store sensitive configuration in environment variables.
-- Keep real `.env` files out of public repositories.
-- Use a strong `JWT_SECRET` for non-local environments.
-- Restrict `CORS_ORIGIN` to trusted frontend domains in production.
-- Use a secured MongoDB connection string with appropriate user permissions.
+SECURITY NOTES
 
-## Repository Status
+- Store sensitive configuration in environment variables
+- Keep real .env files out of public repositories
+- Use a strong JWT_SECRET for non-local environments
+- Restrict CORS_ORIGIN to trusted frontend domains in production
+- Use a secured MongoDB connection string with appropriate user permissions
 
-This README is intended for local project documentation and repository presentation. Creating this file does not push any code or configuration to a remote Git repository.
+--------------------------------------------------
+
+HEALTH CHECK
+
+GET https://compassionate-dream-production-18ff.up.railway.app/health
+
+--------------------------------------------------
+
+REPOSITORY STATUS
+
+This README is intended for local project documentation, deployment setup, and repository presentation.
