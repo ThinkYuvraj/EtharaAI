@@ -38,81 +38,27 @@ console.log(`[startup] index.html exists: ${existsSync(indexPath)}`);
 function sendFile(res, filePath) {
   const type = contentTypes[extname(filePath)] ?? 'application/octet-stream';
   res.writeHead(200, { 'Content-Type': type });
-  const stream = createReadStream(filePath);
-  stream.on('error', (err) => {
-    console.error(`[sendFile] Failed to read file "${filePath}":`, err.message);
-    if (!res.headersSent) {
-      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-    }
-    res.end('Internal Server Error');
-  });
-  stream.pipe(res);
+  createReadStream(filePath).pipe(res);
 }
 
 const server = createServer((req, res) => {
-  try {
-    const urlPath = decodeURIComponent(new URL(req.url ?? '/', `http://${req.headers.host}`).pathname);
-    const safePath = normalize(urlPath).replace(/^(\.\.[/\\])+/, '');
-    const requestedPath = resolve(join(distDir, safePath));
+  const urlPath = decodeURIComponent(new URL(req.url ?? '/', `http://${req.headers.host}`).pathname);
+  const safePath = normalize(urlPath).replace(/^(\.\.[/\\])+/, '');
+  const requestedPath = resolve(join(distDir, safePath));
 
-    console.log(`[request] ${req.method} ${urlPath} -> ${requestedPath}`);
-
-    if (!requestedPath.startsWith(distDir)) {
-      console.warn(`[request] Forbidden path traversal attempt: ${requestedPath}`);
-      res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('Forbidden');
-      return;
-    }
-
-    if (existsSync(requestedPath) && statSync(requestedPath).isFile()) {
-      sendFile(res, requestedPath);
-      return;
-    }
-
-    if (urlPath.startsWith('/api/')) {
-      console.warn(`[request] API route hit on frontend server: ${urlPath}`);
-      res.writeHead(404, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ message: 'API route not found on frontend server' }));
-      return;
-    }
-
-    // SPA fallback — serve index.html for all unmatched routes
-    if (!existsSync(indexPath)) {
-      console.error(`[request] index.html not found at ${indexPath}`);
-      res.writeHead(503, { 'Content-Type': 'text/plain; charset=utf-8' });
-      res.end('Service Unavailable: build artifacts missing');
-      return;
-    }
-
-    sendFile(res, indexPath);
-  } catch (err) {
-    console.error(`[request] Uncaught error handling ${req.method} ${req.url}:`, err);
-    try {
-      if (!res.headersSent) {
-        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-      }
-      res.end('Internal Server Error');
-    } catch (writeErr) {
-      console.error(`[request] Failed to send error response:`, writeErr.message);
-    }
+  if (!requestedPath.startsWith(distDir)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Forbidden');
+    return;
   }
-});
 
-server.on('error', (err) => {
-  console.error(`[server] Server error:`, err);
-});
+  if (existsSync(requestedPath) && statSync(requestedPath).isFile()) {
+    sendFile(res, requestedPath);
+    return;
+  }
 
-server.on('clientError', (err, socket) => {
-  console.error(`[server] Client error:`, err.message);
-  socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
-});
-
-process.on('uncaughtException', (err) => {
-  console.error(`[process] Uncaught exception:`, err);
-});
-
-process.on('unhandledRejection', (reason) => {
-  console.error(`[process] Unhandled promise rejection:`, reason);
+  // SPA fallback — serve index.html for all unmatched routes
+  sendFile(res, indexPath);
 });
 
 server.listen(port, '0.0.0.0', () => {
