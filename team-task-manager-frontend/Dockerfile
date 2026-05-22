@@ -7,7 +7,7 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_API_BASE=https://etharaai-production-1340.up.railway.app
+ARG VITE_API_BASE=https://compassionate-dream-production-18ff.up.railway.app
 ENV VITE_API_BASE=$VITE_API_BASE
 
 RUN npm run build
@@ -26,3 +26,4 @@ COPY --from=build /app/dist ./dist
 EXPOSE 8080
 
 CMD ["node", "server.mjs"]
+
