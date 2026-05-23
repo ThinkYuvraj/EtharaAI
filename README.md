@@ -7,13 +7,13 @@ Team Task Manager is a full-stack web application developed to help teams organi
 LIVE DEPLOYMENT
 
 Frontend Application
-https://frontend-production-0b59f.up.railway.app/
+https://etharai-frontend.up.railway.app/login
 
 Backend API
-https://compassionate-dream-production-18ff.up.railway.app/
+https://etharaai-mongodb.up.railway.app/
 
 Railway Project Dashboard
-https://railway.com/project/d3a2e446-6ee7-4239-b1b0-7e9187c60a86?environmentId=c0ed5a0e-1939-4a69-94e5-63e4959dcf71
+https://railway.com/project/73cea88c-3ed5-4955-ac83-524e6f2c459f/service/7b0a13da-662e-418d-8b6a-7cb738ca880b?environmentId=b0dc39cf-ff1f-492a-b93e-1eaed0f38ce4
 
 --------------------------------------------------
 
