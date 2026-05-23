@@ -12,11 +12,19 @@ dotenv.config();
 
 const app = express();
 
-const defaultCorsOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173'];
-const corsOrigins = (process.env.CORS_ORIGIN ?? defaultCorsOrigins.join(','))
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean);
+const defaultCorsOrigins = ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://frontend-production-2948.up.railway.app'];
+
+// Merge env-provided origins with local dev origins.
+// This avoids browser "failed to fetch" during auth when running frontend locally
+// but CORS_ORIGIN is set to a production URL.
+const corsOrigins = Array.from(
+  new Set(
+    `${process.env.CORS_ORIGIN ?? ''},${defaultCorsOrigins.join(',')}`
+      .split(',')
+      .map((origin) => origin.trim())
+      .filter(Boolean)
+  )
+);
 
 app.use(cors({
   origin(origin, callback) {
@@ -27,7 +35,7 @@ app.use(cors({
 
     callback(new Error(`CORS origin not allowed: ${origin}`));
   },
-  credentials: true
+  credentials: true,
 }));
 app.use(express.json());
 
